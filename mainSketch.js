@@ -27,22 +27,23 @@ function setup() {
 
 function draw() {
 
-  MIN_VAL = 0.0;
-  MAX_VAL = 10.0;
-  rgb_v = [0.0,0.0,0.0]
+  var MIN_VAL = 0.0;
+  var MAX_VAL = 10.0;
+  var rgb_v = [0.0,0.0,0.0];
 
-  dx = mouseX - x0; dy = mouseY - y0;
-  SWIM_F = VelSlider.value();
+  var dx = mouseX - x0;
+  var dy = mouseY - y0;
+  var SWIM_F = VelSlider.value();
 
   for (i = 0; i < CANVAS_WIDTH; i=i+PIXEL_STEP){
     for (j = 0; j < CANVAS_HEIGHT; j=j+PIXEL_STEP){
-      vxy = [0.0, 0.0];
+      var vxy = [0.0, 0.0];
       Oseen(i-x0,j-y0,dx,dy,vxy);
       for (si = 0; si < swimmer_x.length; si++){
-        f_xy = fVector(swimmer_theta[si], SWIM_F); 
+        var f_xy = fVector(swimmer_theta[si], SWIM_F); 
         Oseen(i-swimmer_x[si], j-swimmer_y[si], f_xy[0], f_xy[1], vxy);
       }
-      pValue = Math.sqrt(vxy[0]*vxy[0] + vxy[1]*vxy[1]);
+      var pValue = Math.sqrt(vxy[0]*vxy[0] + vxy[1]*vxy[1]);
 
       if (!isFinite(pValue)){ continue; }
 
@@ -57,10 +58,10 @@ function draw() {
 
   for (i = 0; i < CANVAS_WIDTH; i=i+PIXEL_ARROW_STEP){
     for (j = 0; j < CANVAS_HEIGHT; j=j+PIXEL_ARROW_STEP){
-      vxy = [0.0, 0.0];
+      var vxy = [0.0, 0.0];
       Oseen(i-x0,j-y0,dx,dy,vxy);
       for (si = 0; si < swimmer_x.length; si++){
-        f_xy = fVector(swimmer_theta[si], SWIM_F);
+        var f_xy = fVector(swimmer_theta[si], SWIM_F);
         Oseen(i-swimmer_x[si], j-swimmer_y[si], f_xy[0], f_xy[1], vxy);
       }
       drawArrow(vxy,[i,j]);
@@ -101,7 +102,7 @@ function SwimmerUpdate(x,y,theta,f){
   Brownian_strength = BrownianSlider.value();
   for (i = 0; i < theta.length; i++){
     theta[i] = theta[i] + Brownian_strength * (Math.random()-0.5) * DT;
-    fXY = fVector(theta[i], f);
+    var fXY = fVector(theta[i], f);
     x[i] = x[i] + fXY[0] * DT;
     y[i] = y[i] + fXY[1] * DT;
     x[i] = wrap(x[i], CANVAS_WIDTH);
@@ -125,9 +126,11 @@ function drawSwimmer(x,y){
 // Input: fx,fy: force
 // Output: vxy: velocity, array, overwritten
 function Oseen(x, y, fx, fy, vxy){
-  xx = x*x; yy = y*y; xy = x*y;
-  rr = xx + yy;
-  r = Math.sqrt(rr);
+  var xx = x*x;
+  var yy = y*y;
+  var xy = x*y;
+  var rr = xx + yy;
+  var r = Math.sqrt(rr);
 
   vxy[0] = vxy[0] + (fx + (xx*fx + xy*fy)/rr)/r;
   vxy[1] = vxy[1] + (fy + (xy*fx + yy*fy)/rr)/r;
@@ -161,8 +164,8 @@ function interpolate(value,xL,xR,yL,yR){
 function drawArrow(v,loc){
   push();
   stroke(0);
-  normalizeV = [0.0, 0.0];
-  vMag = Math.sqrt(v[0]*v[0]+v[1]*v[1]);
+  var normalizeV = [0.0, 0.0];
+  var vMag = Math.sqrt(v[0]*v[0]+v[1]*v[1]);
   if (vMag>0){
     normalizeV[0] = 5 * v[0]/vMag;
     normalizeV[1] = 5 * v[1]/vMag;
